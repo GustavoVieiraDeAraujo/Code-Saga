@@ -1,0 +1,25 @@
+ROUND
+goku x vegeta -> vegeta
+sailor_moon x bloom -> sailor_moon
+charizard x sasuke -> sasuke
+bowser x naruto -> bowser
+ROUND
+charizard x naruto -> charizard
+sailor_moon x goku -> sailor_moon
+bowser x vegeta -> bowser
+sasuke x bloom -> bloom
+ROUND
+bowser x sailor_moon -> bowser
+goku x vegeta -> goku
+naruto x bloom -> bloom
+sasuke x charizard -> sasuke
+ROUND
+bowser x sasuke -> bowser
+naruto x sailor_moon -> sailor_moon
+vegeta x charizard -> charizard
+goku x bloom -> bloom
+ROUND
+bowser x goku -> bowser
+sailor_moon x vegeta -> sailor_moon
+naruto x sasuke -> naruto
+bloom x charizard -> bloom

@@ -43,5 +43,3 @@ def potenciacao(qual_valor_quer_elevar, expoente)
     end
 end
 
-p(potenciacao(0.2, -5))
-

@@ -4,9 +4,3 @@ class Categoria
     @nome = nome
   end
 end
-
-
-teste =  Categoria.new('Teste')
-p (teste)
-teste =  Categoria.new()
-p (teste)

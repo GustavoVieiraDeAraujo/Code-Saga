@@ -1,7 +1,9 @@
+require_relative 'categoria'
+
 class Produto
   attr_accessor :nome, :categoria, :preco, :estoque
 
-  def initialize(nome:, categoria: 'Geral' , preco:, estoque:)
+  def initialize(nome:'Sem nome', preco:0, estoque:0, categoria: Categoria.new())
     @nome = nome
     @categoria = categoria
     @preco = preco

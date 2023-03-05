@@ -1,5 +1,3 @@
-require_relative 'categoria'
-
 class Produto
   attr_accessor :nome, :categoria, :preco, :estoque
 

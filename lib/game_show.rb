@@ -38,10 +38,3 @@ class GameShow
     validos
   end
 end
-
-
-breaks = [10, 12, 13, 14, 8, 7, 5, 20, 19, 9]
-[0, 4, 5, 6, 9]
-[10,8,7,5,9]
-maximum_time = 40
-GameShow.new.commercial_breaks(breaks, maximum_time)

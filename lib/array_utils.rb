@@ -1,6 +1,6 @@
 class ArrayUtils
   def self.compara(lista1, lista2)
-    lista1.sort == lista2.sort ? true : false
+    lista1.sort == lista2.sort
   end
 
   def self.divisiveis(divisor1, divisor2)

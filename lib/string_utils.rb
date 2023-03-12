@@ -1,16 +1,8 @@
 class StringUtils
   def wavefy(string)
-    retorno = ''
-    flag = true
-    string.chars.each do |letter|
-      if flag
-        retorno += letter.downcase
-        flag = false
-      else
-        retorno += letter.upcase
-        flag = true
-      end
+    letters = string.chars.map.with_index do |letter, index|
+      index.even? ? letter.downcase : letter.upcase
     end
-    retorno
+    letters.join
   end
 end

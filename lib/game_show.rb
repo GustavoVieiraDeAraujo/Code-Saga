@@ -1,40 +1,19 @@
 class GameShow
   def commercial_breaks(breaks, maximum_time)
     validos = []
-    (1..(breaks.length())).step(1) do |agrupamento|
+    (1..breaks.length).each do |agrupamento|
       combinacao = breaks.combination(agrupamento).to_a
       combinacao.each do |possibilidade|
-        if (possibilidade.inject(:+) <= maximum_time)
-          validos.push(possibilidade)
-        end
+        validos.push(possibilidade) if possibilidade.sum <= maximum_time
       end
     end
-    
-    maior_quantidade = 0
-    validos.each do |intervalos|
-      if( intervalos.length() > maior_quantidade)
-        maior_quantidade = intervalos.length()
-      end
+    maior_quantidade = validos.map(&:length).max
+    if validos.length > 1
+      validos = validos.select { |x| x.length == maior_quantidade }
+      maior_soma = validos.map(&:sum).max
+      validos = validos.select { |x| x.sum == maior_soma }
     end
-    
-    if (validos.length() != 1)
-      validos = validos.select{|x| ((x.length() == maior_quantidade))}
-      maior_soma = 0
-      validos.each do |intervalos|
-        if( intervalos.inject(:+) > maior_soma)
-          maior_soma = intervalos.inject(:+)
-        end
-      end
-      validos = validos.select{|x| ((x.inject(:+) == maior_soma))}
-    end
-    
-    (0..(validos.length()-1)).step(1) do |a|
-      (0..(validos[a].length()-1)).step(1) do |b|
-        posicao = breaks.find_index(validos[a][b])
-        validos [a][b] = posicao
-      end
-    end
-
+    validos.map! { |intervalos| intervalos.map { |intervalo| breaks.index(intervalo) } }
     validos
   end
 end

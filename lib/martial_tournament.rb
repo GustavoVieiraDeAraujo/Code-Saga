@@ -1,65 +1,47 @@
 class MartialTournament
-
   def extract_information_file(file_name)
-    informação_extraida = {}
-    file = File.open("./data/#{file_name}")
-    file_data = file.read[6..].split("\nROUND\n").map{|luta| luta.split("\n")}
-    file.close 
-    (0..(file_data.length()-1)).step(1) do |numero_round|
-      informação_extraida[(numero_round+1).to_s.to_sym] = file_data[numero_round]
+    informacao_extraida = {}
+    File.open("./data/#{file_name}") do |file|
+      file_data = file.read[6..].split("\nROUND\n").map { |luta| luta.split("\n") }
+      (0..file_data.length - 1).step(1) do |numero_round|
+        informacao_extraida[(numero_round + 1).to_s.to_sym] = file_data[numero_round]
+      end
     end
-    informação_extraida
+    informacao_extraida
   end
-
   def execute_round(round_information, participating_points)
-    nova_pontuação = {}
+    nova_pontuacao = {}
     round_information.each do |round|
-      lutador_1 = round[0]
-      lutador_2 = round[1]
-      vencedor = round[2]
-
+      lutador_1, lutador_2, vencedor = round
       pontos_lutador_1 = participating_points[lutador_1.to_sym]
       pontos_lutador_2 = participating_points[lutador_2.to_sym]
-  
-      if (vencedor == lutador_1)
-        if (pontos_lutador_1 > pontos_lutador_2)
+      if vencedor == lutador_1
+        if pontos_lutador_1 > pontos_lutador_2
           pontos_lutador_1 += 1
         else
-          diferenca = (pontos_lutador_2 - pontos_lutador_1)
-          pontos_lutador_1 += (diferenca + 1)
-          if (diferenca >= 3)
-            pontos_lutador_2 -= 3
-          else
-            pontos_lutador_2 -= diferenca
-          end
+          diferenca = pontos_lutador_2 - pontos_lutador_1
+          pontos_lutador_1 += diferenca + 1
+          pontos_lutador_2 -= diferenca >= 3 ? 3 : diferenca
         end
       else
-        if (pontos_lutador_1 < pontos_lutador_2)
+        if pontos_lutador_1 < pontos_lutador_2
           pontos_lutador_2 += 1
         else
-          diferenca = (pontos_lutador_1 - pontos_lutador_2)
-          pontos_lutador_2 += (diferenca + 1)
-          if (diferenca >= 3)
-            pontos_lutador_1 -= 3
-          else
-            pontos_lutador_1 -= diferenca
-          end
+          diferenca = pontos_lutador_1 - pontos_lutador_2
+          pontos_lutador_2 += diferenca + 1
+          pontos_lutador_1 -= diferenca >= 3 ? 3 : diferenca
         end
       end
-  
-      nova_pontuação[lutador_1.to_sym] = pontos_lutador_1
-      nova_pontuação[lutador_2.to_sym] = pontos_lutador_2
+      nova_pontuacao[lutador_1.to_sym] = pontos_lutador_1
+      nova_pontuacao[lutador_2.to_sym] = pontos_lutador_2
     end
-    nova_pontuação
+    nova_pontuacao
   end
-
   def cria_rank(initial_points, first_score)
     array_initial_points = []
-
     initial_points.each_pair do |chave, value|
       array_initial_points.push([chave, value])
     end
-
     array_initial_points.each do |participante|
       empatados = array_initial_points.select{|lutador| lutador[1] == participante[1]}
       if (empatados.length() > 1)
@@ -75,8 +57,7 @@ class MartialTournament
           initial_points[guerreiro_2] = empatados[1][1] 
         end
       end
-    end
-    
+    end 
     rank = {}
     participantes_ranqueados = initial_points.sort_by {|x| x[1]}.reverse
     (1..(participantes_ranqueados.length())).step(1) do |posicao|
@@ -85,7 +66,6 @@ class MartialTournament
     end
     rank
   end
-
   def placements(match_results, initial_points, rounds)
     ranks = []
     first_score = initial_points

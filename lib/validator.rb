@@ -2,40 +2,36 @@ class Validator
   def initialize(data)
     @data = data
   end
-  def cpf(cpf)
-    digitos = cpf.gsub('.', '').sub('-', '').chars.map{|n| n.to_i}
-    soma = 10*digitos[0]+9*digitos[1]+8*digitos[2]+7*digitos[3]+6*digitos[4]+5*digitos[5]+4*digitos[6]+3*digitos[7]+2*digitos[8]
-    resto = soma % 11
-    digito_verificador1 = 11 - resto
-    if digito_verificador1 >= 10
-      digito_verificador1 = 0
-    end
-    if digito_verificador1 == digitos[9]
-      soma = digitos[0]*11+digitos[1]*10+digitos[2]*9+digitos[3]*8+digitos[4]*7+digitos[5]*6+digitos[6]*5+digitos[7]*4+digitos[8]*3+digitos[9]*2
-      resto = soma % 11
-      digito_verificador2 = 11 - resto
-      if digito_verificador2 >= 10
-        digito_verificador2 = 0
-      end
-      if digito_verificador2 == digitos[10]
-        return true
-      end
-    end
-    return false
+  
+  def valid_cpf?(cpf)
+    digitos = cpf.gsub(/[.-]/, '').chars.map(&:to_i)
+    soma = digitos.first(9).zip([10, 9, 8, 7, 6, 5, 4, 3, 2]).sum { |a, b| a * b }
+    digito_verificador1 = 11 - (soma % 11)
+    digito_verificador1 = 0 if digito_verificador1 >= 10
+    return false unless digito_verificador1 == digitos[9]
+    soma = digitos.first(10).zip([11, 10, 9, 8, 7, 6, 5, 4, 3, 2]).sum { |a, b| a * b }
+    digito_verificador2 = 11 - (soma % 11)
+    digito_verificador2 = 0 if digito_verificador2 >= 10
+    digito_verificador2 == digitos[10]
   end
-  def data_checker()
-    if ((@data[:nome_completo] =~ /^[a-záàâãéèêíïóôõöúçñ ]+$/i) != nil and @data[:nome_completo].split(' ').length() >= 2)
-      if((@data[:aniversario] =~ /^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)([1][7-9][0-9][0-9]|[2][0][0-9][0-9]|[2][1][0][0])$/) != nil)
-        if ((@data[:senha] =~ /(?=.*[A-Z])(?=.*[0-9])(?=^.{8,}$)[$*&@#a-z]?.*$/) != nil)
-          if(cpf(@data[:cpf]))
-            return 'Válido'
-          end
-          return 'Inválido'
-        end
-        return 'Inválido'
-      end
-      return 'Inválido'
-    end
-    return 'Inválido'
+
+  def valid_name?(name)
+    name =~ /^[a-záàâãéèêíïóôõöúçñ ]+$/i && name.split(' ').length >= 2
+  end
+
+  def valid_birthday?(birthday)
+    birthday =~ /^([0-2][0-9]|(3)[0-1])\/(((0)[0-9])|((1)[0-2]))\/([1][7-9][0-9][0-9]|[2][0][0-9][0-9]|[2][1][0][0])$/
+  end
+
+  def valid_password?(password)
+    password =~ /(?=.*[A-Z])(?=.*[0-9])(?=^.{8,}$)[$*&@#a-z]?.*$/
+  end
+
+  def data_checker
+    return 'Inválido' unless valid_name?(@data[:nome_completo])
+    return 'Inválido' unless valid_birthday?(@data[:aniversario])
+    return 'Inválido' unless valid_password?(@data[:senha])
+    return 'Inválido' unless valid_cpf?(@data[:cpf])
+    'Válido'
   end
 end

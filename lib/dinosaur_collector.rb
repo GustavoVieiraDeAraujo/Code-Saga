@@ -14,7 +14,6 @@ class DinosaurCollector
         dino_position = toys_positions[pos_brinquedo_mais_perto]
         caminho_percorrido.push(dino_position)
         toys_positions.delete_at(pos_brinquedo_mais_perto)
-  
         quantidade_brinquedos -= 1
         brinquedos_recuperados += 1
         battery -= distancia_brinquedos.min
